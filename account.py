@@ -1,7 +1,7 @@
-from RoomCatalog import RoomCatalog
+from Roomcatalog import RoomCatalog
 from CreditCard import CreditInfo
 import datetime
-from Room import*
+from room import*
 class User:
     def __init__(self,contact_name,contact_username,contact_phone_num,contact_email,contact_password):
         self._contact_name= contact_name
