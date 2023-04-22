@@ -1,5 +1,7 @@
 from datetime import datetime
-from room import Room
+from Room import Room
+from Interval import Interval
+from Booking import Booking
 class Roomcatalog:
     def __init__(self):
         self._room_lists = []
@@ -30,3 +32,16 @@ class Roomcatalog:
             available_room_all[j] = [i._room_name,i._number_of_bathroom]
             j += 1
         return available_room
+    
+    def book_room(self, room, user, st_date, end_date):
+        
+        for i in self._room_lists:
+            if i._room_name == room:
+                book_room = i
+                break
+        interval = Interval(st_date, end_date)
+        book_room.add_interval(interval)
+        booking = Booking()
+        
+        
+        return "success"

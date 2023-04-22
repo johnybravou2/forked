@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 
 class AvalibleDTO(BaseModel):
+    Hotel : str
     start_date : str
     start_time : str
     end_date : str
@@ -28,7 +29,6 @@ class CreditCard(BaseModel):
 class AddroomDTO (BaseModel):
     hotel_name : str
     room_number : int
-    fuel_type : str
     room_name : str
     room_area : int
     number_of_bathroom : int

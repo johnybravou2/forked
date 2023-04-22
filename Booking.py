@@ -1,6 +1,6 @@
 import datetime
 import uuid
-from room import Room
+from Room import Room
 from Interval import Interval
 
 class Booking:

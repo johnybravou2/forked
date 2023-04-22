@@ -6,6 +6,7 @@ from account import customer
 from account import admin
 from Interval import interval
 from fastapi import FastAPI
+from Cart import Cart
 
 app = FastAPI()
 
@@ -97,3 +98,11 @@ async def show_available_room(data:dict)->dict:
     print(dt)
     return {"Data": dt}
     #return {"Data": a_room}
+
+@app.get("/",tags=["Cart"])
+async def cart() -> dict :
+    return("Ping":"Pong")
+
+@app.post("/add_room_cart",tags=["Cart"])
+async def add_room_Cart(data:dict) -> dict :
+    room = data["Room"]
