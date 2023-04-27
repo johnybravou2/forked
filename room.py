@@ -1,10 +1,10 @@
 import datetime
 
 class Room:
-    def __init__(self, hotel_name, room_number, room_name, room_area, number_bedroom, number_bathroom, room_amount ,room_pic):
+    def __init__(self, hotel_name, room_name, room_number, room_area, number_bedroom, number_bathroom, room_amount ,room_pic):
         self._hotel_name = hotel_name
-        self._room_number = room_number
         self._room_name = room_name
+        self._room_number = room_number
         self._room_area = room_area
         self._number_of_bathroom = number_bedroom
         self._number_of_bedroom = number_bathroom

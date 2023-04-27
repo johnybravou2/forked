@@ -12,45 +12,32 @@ from System import *
 app = FastAPI()
 
 room_plantationview = Room("Kirimayaresort",
-                           "1001",
                            "Plantation View",
+                           "101",
                            "42 sq. m.",
                            "1 Bedroom",
                            "1 Room",
-                           
-                           "1000",None)
-                
-
+                            "2000",
+                            "PICTURE\PLANTATION.png")
 room_horizonview = Room("Kirimayaresort",
-                        "1002",
                         "Horizon View",
+                        "102",
                         "42 sq. m.",
                         "1 Bedroom",
                         "1 Room",
-                        
-                        "2000",None)
-
-room_terrace_suite = Room("Kirimayaresort",
-                          "1003",
-                          "Terrace Suite",
-                          "84 sq. m.",
-                          "1 Bedroom",
-                          "1 Room",
-                        
-                          "2500",None)
-
-
-##muthi
+                        "3000",
+                        "PICTURE\HORIZON.png"
+                        ) 
 
 room_muthimaya_forest_poolvilla = Room("Muthimaya",
-                                       "1004",
                                         "MUTHI MAYA Forest Pool Villa",
+                                        "103",
                                        "164 sq. m.",
                                        "1 Bedroom",
                                        "1 Room",
                                        
-                                       "2500",None)
-
+                                       "2500",
+                                       "PICTURE\MUTHIMAYA.png")
 
 ##atta
 
@@ -105,14 +92,16 @@ sym = System()
 testalog = Roomcatalog()
 testalog.add_room(room_plantationview)
 testalog.add_room(room_horizonview)
-testalog.add_room(room_terrace_suite)
 testalog.add_room(room_muthimaya_forest_poolvilla)
 testalog.add_room(room_one_bedroom_suite)
 testalog.add_room(room_one_bedroom_delight)
 testalog.add_room(room_two_bedroom_delight)
 testalog.add_room(room_penthouse_suite)
-room_plantationview.add_interval(Interval("1-6-2018","9:00","10-6-2018","10:00"))
-room_horizonview.add_interval(Interval("5-6-2018","9:00","10-6-2018","10:00"))
+
+room_plantationview.add_interval(Interval("1-6-2023","10-6-2023"))
+room_horizonview.add_interval(Interval("5-6-2023","10-6-2023"))
+
+print(Interval("1-6-2023","10-6-2023"))
 #function  หารถคันนั้น
 sym.add_user(mix)
 sym.add_user(xiw)
@@ -213,15 +202,14 @@ async def add_room_to_catalog(data:AddroomDTO):
 #    list_room = testalog.find_available_room(data.start_date,data.start_time,data.end_date,data.end_time)
 #    return list_room
 
+
 @app.post("/show_available_room", tags=["book room"])
 async def show_available_room(data:dict)->dict:
     hotel = data["Hotel"]
     st_d = data["start_date"]
-    st_t = data["start_time"]
     end_d = data["end_date"]
-    end_t = data["end_time"]
-
-    a_room = testalog.find_available_room(st_d,st_t,end_d,end_t,hotel)
+    
+    a_room = testalog.find_available_room(st_d,end_d,hotel)
     print(a_room)
     for i in a_room:
         print(i)
@@ -233,9 +221,13 @@ async def show_available_room(data:dict)->dict:
     #return {"Data": a_room}
 
 @app.post("/book_room",tags = ["Booking"])
-async def booking_room(data: BookingDTO,current_user = Depends(sym.get_current_user)):
-    current_user._booking =testalog.book_room(data.room,data.start_date,data.start_time,data.end_date,data.end_time)
-    return current_user._booking
+async def booking_room(data: dict) -> dict:
+    #current_user._booking = testalog.book_room(data.room,data.start_date,data.end_date)
+    room = data["room"]
+    st_date = data["start_date"]
+    end_date = data["end_date"]
+
+    return testalog.book_room(room,st_date,end_date)
 
 
 

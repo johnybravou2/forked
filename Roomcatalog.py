@@ -14,12 +14,14 @@ class Roomcatalog:
         for i in self._room_lists:
             print(i._room_name)
     
-    def find_available_room(self, start_date, start_time, end_date, end_time, hotel):
+    def find_available_room(self, start_date, end_date, hotel):
+        start_time = "12:00"
+        end_time = "12:00"
         date1 = datetime.strptime(start_date + " " + start_time, '%d-%m-%Y %H:%M')
         date2 = datetime.strptime(end_date + " " + end_time, '%d-%m-%Y %H:%M')
         available_room = []
-        available_room_all = {}
-        j = 0
+        #available_room_all = {}
+        #j = 0
         for i in self._room_lists:
             if not i._status_available and i._hotel_name == hotel:
                 continue
@@ -29,11 +31,11 @@ class Roomcatalog:
                 continue
             available_room.append(i)
             # available_bathroom.append(i._number_of_bathroom)
-            available_room_all[j] = [i._room_name,i._number_of_bathroom]
-            j += 1
+            #available_room_all[j] = [i._room_name,i._number_of_bathroom]
+            #j += 1
         return available_room
     
-    def book_room(self, room, user, st_date, end_date):
+    def book_room(self, room, st_date, end_date):
         
         for i in self._room_lists:
             if i._room_name == room:
@@ -41,7 +43,7 @@ class Roomcatalog:
                 break
         interval = Interval(st_date, end_date)
         book_room.add_interval(interval)
-        booking = Booking()
+        booking = Booking(book_room,interval)
         
-        
-        return "success"
+        print(booking)
+        return booking

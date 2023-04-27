@@ -5,13 +5,18 @@ from Interval import Interval
 
 class Booking:
     existng_booking_id= set()
+    id = 0
 
-    def __init__(self,room:Room,interval:Interval):
-        self.__day_range = interval
-        self.__day_start = self.__day_range.get_end_time()
-        self.__day_end = self.__day_range.get_start_time()
-        self.__price = room.get_room_amount() *(self.__day_start - self.__day_end).days
-        self._booking_id = Booking.generate_booking_id()
+    def __init__(self,room,interval):
+        Booking.id += 1
+        self._room = room
+        self._interval = interval
+        self._id = Booking.id
+        #self.__day_range = interval
+        #self.__day_start = self.__day_range.get_end_time()
+        #self.__day_end = self.__day_range.get_start_time()
+        #self.__price = room.get_room_amount() *(self.__day_start - self.__day_end).days
+        #self._booking_id = self.generate_booking_id()
 
     def generate_booking_id(cls):
         while True:
@@ -25,3 +30,9 @@ class Booking:
         print(self.__day_start)
         print(self.__day_end)
         print(self.__price)
+
+    def __str__(self):
+        m_str = "Room: " + str(self._room)
+        m_str += "ID: " + str(self._id)
+        m_str += " Time : " + self._interval.__str__()
+        return m_str

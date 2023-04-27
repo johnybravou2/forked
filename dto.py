@@ -10,9 +10,7 @@ class AvalibleDTO(BaseModel):
 class BookingDTO(BaseModel):
     room : str
     start_date : str
-    start_time : str
     end_date : str
-    end_time : str
 
 class EditProfileDTO(BaseModel):
     new_name :str
