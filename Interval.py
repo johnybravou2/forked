@@ -4,7 +4,7 @@ class Interval:
     
     def __init__(self,start_date_str,end_date_str):
         self._start_time_str = "12:00"
-        self._end_time_str = "12:00"
+        self._end_time_str = "11:00"
         self._date_start = self.convert_str_datetime_to_datetime(start_date_str, self._start_time_str)
         self._date_end = self.convert_str_datetime_to_datetime(end_date_str, self._end_time_str)
     

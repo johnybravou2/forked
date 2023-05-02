@@ -208,7 +208,7 @@ async def add_room_to_catalog(data:AddroomDTO):
 #    return list_room
 
 
-@app.post("/show_available_room", tags=["book room"])
+@app.post("/show_available_room", tags=["Search room"])
 async def show_available_room(data:dict)->dict:
     tempcart.clear_cart()
     
@@ -224,7 +224,7 @@ async def show_available_room(data:dict)->dict:
     for i in a_room:
         dt[i._room_name] = i._room_pic
     print(dt)
-    return {"Data": dt}
+    return {"Data": a_room}
     #return {"Data": a_room}
 
 @app.post("/add_to_cart",tags = ["Cart"])

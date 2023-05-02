@@ -16,7 +16,7 @@ class Roomcatalog:
     
     def find_available_room(self, start_date, end_date, hotel):
         start_time = "12:00"
-        end_time = "12:00"
+        end_time = "11:00"
         date1 = datetime.strptime(start_date + " " + start_time, '%d-%m-%Y %H:%M')
         date2 = datetime.strptime(end_date + " " + end_time, '%d-%m-%Y %H:%M')
         available_room = []
@@ -62,6 +62,7 @@ class Roomcatalog:
         
         book_room.add_interval(interval)
         booking = Booking(book_room,interval,user)
+        
         
         print(booking)
         return booking

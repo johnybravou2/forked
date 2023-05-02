@@ -4,12 +4,14 @@ import requests
 from PIL import ImageTk, Image
 from tkcalendar import DateEntry
 
+
 API_ENDPOINT1 = "http://127.0.0.1:8000/show_available_room"
 ADD_TO_CART = "http://127.0.0.1:8000/add_to_cart"
 
 Hotel = ["Kirimayaresort","Muthimaya","Atta"]
 
 temp = []
+start_page_list = []
 root = Tk()
 def on_click():
     global photo1
@@ -33,7 +35,7 @@ def on_click():
 
         print('on click')
 
-        print(str_dt)
+        
         payload = {
             "Hotel" : select_hotel.get(),
             "start_date": str_start,
@@ -54,6 +56,7 @@ def on_click():
                 value_list.append(value)
                 keys.append(key)
                 print(value)
+                
                 tmp = Button(root, text=str(key), bg="green", command=lambda: on_click2(keys[-1]))
                 tmp.place(x=100,y=150+i)
                 temp.append(tmp)
@@ -64,11 +67,14 @@ def on_click():
                 #tmp2.place(x=300,y=200+i)
 
                 #temp.append(tmp2)
+           
+
+
             print(value_list)
             j=0
             k=0
             i=0
-            value_list = ["PICTURE\\PLANTATION.png","PICTURE\\HORIZON.png"]
+            
             for i,image_path in enumerate(value_list):
                 img = Image.open(image_path)
                 img = img.resize((150, 150), Image.ANTIALIAS)
@@ -100,6 +106,7 @@ def on_click():
         print("rai wa")
         e = Label(root, text= '"No reserved room"',fg=("red"))
         e.place(x=490,y=5)
+        temp.append(e)
 
 def on_click2(room):
     print("on click2")
@@ -134,25 +141,63 @@ sel_end =StringVar()
 #def start_page():
  # declaring string variable 
 
-cal=DateEntry(root,selectmode='day',textvariable=sel_start)
-cal.place(x=200,y=30)
-st_date = cal.get_date()
-str_dt=st_date.strftime("%d-%m-%Y") # 18-04-2021
+class RoomDetailsPage(Frame):
+    def __init__(self, parent, room):
+        Frame.__init__(self, parent)
 
-cal2=DateEntry(root,selectmode='day',textvariable=sel_end)
-cal2.place(x=470,y=30)
+        # โหลดรูปภาพห้องพัก
+        room_image = Image.open(room.image_path)
+        room_image = room_image.resize((400, 300), Image.ANTIALIAS)
+        room_photo = ImageTk.PhotoImage(room_image)
+
+        # แสดงรูปภาพห้องพัก
+        image_label = Label(self, image=room_photo)
+        image_label.image = room_photo
+        image_label.pack()
+
+        # แสดงชื่อห้องพัก
+        name_label = Label(self, text=f"ชื่อห้องพัก: {room.name}")
+        name_label.pack()
+
+        # แสดงรายละเอียดของห้องพัก
+        description_label = Label(self, text=room.description)
+        description_label.pack()
+
+        # แสดงราคาห้องพัก
+        price_label = Label(self, text=f"ราคา: {room.price} บาท/คืน")
+        price_label.pack()
+
+        # แสดงปุ่มปิดหน้าต่าง
+        close_button = ttk.Button(self, text="ปิด", command=self.destroy)
+        close_button.pack()
+
+def start_page():
+    global cal
+    global cal2
+
+    cal=DateEntry(root,selectmode='day',textvariable=sel_start)
+    cal.place(x=200,y=30)
+    start_page_list.append(cal)
+
+    cal2=DateEntry(root,selectmode='day',textvariable=sel_end)
+    cal2.place(x=470,y=30)
+    start_page_list.append(cal2)
+
+    btn = Button(root, text="Search", bg="green", command=on_click)
+    btn.place(x = 485, y = 80)
+    start_page_list.append(btn)
+
+    choose_hotel = OptionMenu(root, select_hotel, *Hotel)
+    choose_hotel.config(width=15)
+    choose_hotel.place(x= 650,y = 27)
+    start_page_list.append(choose_hotel)
 
 
-btn = Button(root, text="Search", bg="green", command=on_click)
-btn.place(x = 485, y = 80)
-choose_hotel = OptionMenu(root, select_hotel, *Hotel)
-choose_hotel.config(width=15)
-choose_hotel.place(x= 650,y = 27)
 
-
-
-
+start_page()
 
 root.geometry("1024x720+200+50")
 
 root.mainloop()
+
+
