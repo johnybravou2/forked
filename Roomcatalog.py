@@ -35,15 +35,33 @@ class Roomcatalog:
             #j += 1
         return available_room
     
-    def book_room(self, room, st_date, end_date):
+    def add_to_cart(self, room, tempcart):
+        for i in self._room_lists:
+            if i._room_name == room:
+                add_room = i
+                break
+        
+        tempcart.add_room_Cart(add_room)
+
+    def remove_from_cart(self, room, tempcart):
+        for i in self._room_lists:
+            if i._room_name == room:
+                remove_room = i
+                break
+        
+        tempcart.remove_from_cart(remove_room)
+
+    def book_room(self, room, st_date, end_date, user):
         
         for i in self._room_lists:
             if i._room_name == room:
                 book_room = i
+                print('#############')
                 break
         interval = Interval(st_date, end_date)
+        
         book_room.add_interval(interval)
-        booking = Booking(book_room,interval)
+        booking = Booking(book_room,interval,user)
         
         print(booking)
         return booking

@@ -7,6 +7,8 @@ from account import*
 from CreditCard import*
 from Interval import*
 from Roomcatalog import Roomcatalog
+from BookHistory import BookHistory
+from Cart import Cart
 from Payment import *
 from System import *
 app = FastAPI()
@@ -17,7 +19,7 @@ room_plantationview = Room("Kirimayaresort",
                            "42 sq. m.",
                            "1 Bedroom",
                            "1 Room",
-                            "2000",
+                            2000,
                             "PICTURE\PLANTATION.png")
 room_horizonview = Room("Kirimayaresort",
                         "Horizon View",
@@ -25,7 +27,7 @@ room_horizonview = Room("Kirimayaresort",
                         "42 sq. m.",
                         "1 Bedroom",
                         "1 Room",
-                        "3000",
+                        3000,
                         "PICTURE\HORIZON.png"
                         ) 
 
@@ -36,7 +38,7 @@ room_muthimaya_forest_poolvilla = Room("Muthimaya",
                                        "1 Bedroom",
                                        "1 Room",
                                        
-                                       "2500",
+                                       2500,
                                        "PICTURE\MUTHIMAYA.png")
 
 ##atta
@@ -90,6 +92,8 @@ xiw = admin("xiw",
 
 sym = System()
 testalog = Roomcatalog()
+bookhis = BookHistory()
+tempcart = Cart()
 testalog.add_room(room_plantationview)
 testalog.add_room(room_horizonview)
 testalog.add_room(room_muthimaya_forest_poolvilla)
@@ -101,8 +105,9 @@ testalog.add_room(room_penthouse_suite)
 room_plantationview.add_interval(Interval("1-6-2023","10-6-2023"))
 room_horizonview.add_interval(Interval("5-6-2023","10-6-2023"))
 
-print(Interval("1-6-2023","10-6-2023"))
-#function  หารถคันนั้น
+print(room_horizonview._date_not_available.__str__())
+
+
 sym.add_user(mix)
 sym.add_user(xiw)
 
@@ -205,6 +210,8 @@ async def add_room_to_catalog(data:AddroomDTO):
 
 @app.post("/show_available_room", tags=["book room"])
 async def show_available_room(data:dict)->dict:
+    tempcart.clear_cart()
+    
     hotel = data["Hotel"]
     st_d = data["start_date"]
     end_d = data["end_date"]
@@ -220,14 +227,41 @@ async def show_available_room(data:dict)->dict:
     return {"Data": dt}
     #return {"Data": a_room}
 
+@app.post("/add_to_cart",tags = ["Cart"])
+async def add_to_cart(data: dict) -> dict:
+    room = data["Room"]
+    night = data["Night"]
+
+    testalog.add_to_cart(room,tempcart)
+    temp = tempcart.get_room()
+    price = []
+    price.append(tempcart.total_price * night)
+    return {"Data" : temp + price}
+
+@app.post("/remove_from_cart",tags = ["Cart"])
+async def remove_from_cart(data: dict) -> dict:
+    room = data["Room"]
+
+    testalog.remove_from_cart(room,tempcart)
+    temp = tempcart.show_item()
+    return {"Data" : temp}
+    
+@app.get("/show_cart",tags = ["Cart"])
+async def show_cart():
+    temp2 = tempcart.get_room()
+    return {"Data" : temp2}
+
+
+
 @app.post("/book_room",tags = ["Booking"])
 async def booking_room(data: dict) -> dict:
     #current_user._booking = testalog.book_room(data.room,data.start_date,data.end_date)
-    room = data["room"]
+    room_name = data["room"]
     st_date = data["start_date"]
     end_date = data["end_date"]
+    username = data["user"]
 
-    return testalog.book_room(room,st_date,end_date)
+    return {"Data" : testalog.book_room(room_name,st_date,end_date,username)}
 
 
 
