@@ -38,3 +38,10 @@ class Booking:
         m_str += " Time : " + self._interval.__str__()
         return(f"room: {self._room._room_name}  Time: {self._interval.__str__()} id: {self._id}")
         return m_str
+    
+class BookHistory:
+    def __init__(self):
+        self.__history_list = []
+        
+    def add_book_history (self,booking):
+        self.__history_list.append(booking)

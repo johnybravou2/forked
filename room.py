@@ -11,7 +11,7 @@ class Room:
         self._date_not_available = []
         self._room_price = room_price
         self._room_pic = room_pic
-        self._status_available = True
+
 
     def add_interval(self, interval):
         self._date_not_available.append(interval)

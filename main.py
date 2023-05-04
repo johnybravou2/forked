@@ -11,20 +11,29 @@ from BookHistory import BookHistory
 from Cart import Cart
 from Payment import *
 from System import *
+from account import User
 app = FastAPI()
 
-room_plantationview = Room("Kirimayaresort",
+room_plantationview1 = Room("Kirimayaresort",
                            "Plantation View",
-                           "101",
+                           "1101",
                            "42 sq. m.",
                            "1 Bedroom",
                            "1 Room",
                             2000,
                             "PICTURE\PLANTATION.png")
+#room_plantationview2 = Room("Kirimayaresort",
+#                           "Plantation View",
+#                           "1102",
+#                           "42 sq. m.",
+#                           "1 Bedroom",
+#                           "1 Room",
+#                            2000,
+#                            "PICTURE\PLANTATION.png")
 room_horizonview = Room("Kirimayaresort",
                         "Horizon View",
-                        "102",
-                        "42 sq. m.",
+                        "1201",
+                        "48 sq. m.",
                         "1 Bedroom",
                         "1 Room",
                         3000,
@@ -94,7 +103,8 @@ sym = System()
 testalog = Roomcatalog()
 bookhis = BookHistory()
 tempcart = Cart()
-testalog.add_room(room_plantationview)
+testalog.add_room(room_plantationview1)
+#testalog.add_room(room_plantationview2)
 testalog.add_room(room_horizonview)
 testalog.add_room(room_muthimaya_forest_poolvilla)
 testalog.add_room(room_one_bedroom_suite)
@@ -102,7 +112,7 @@ testalog.add_room(room_one_bedroom_delight)
 testalog.add_room(room_two_bedroom_delight)
 testalog.add_room(room_penthouse_suite)
 
-room_plantationview.add_interval(Interval("1-6-2023","10-6-2023"))
+room_plantationview1.add_interval(Interval("1-6-2023","10-6-2023"))
 room_horizonview.add_interval(Interval("5-6-2023","10-6-2023"))
 
 print(room_horizonview._date_not_available.__str__())
@@ -123,32 +133,9 @@ sym.add_user(xiw)
 @app.get("/")
 async def home():
     return {"EiEi"}
-#Login
-@app.post("/token")
-async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
-    status_user= sym.check_user(form_data.username,form_data.password)
-    if not status_user:
-        raise HTTPException(status_code=400, detail="Incorrect username or password")
-    user = sym.get_user(form_data.username)
-    return {"access_token": user._contact_username, "token_type": "bearer"}
 
-#Register
-@app.post("/users/registeration")
-async def registeration(data:Registeration):
-    if data.contact_type == "admin":
-        sym.add_user(admin(data.contact_name,
-                        data.contact_username, 
-                        data.contact_phone_num, 
-                        data.contact_password, 
-                        data.contact_email))
-        return {"message": "Register Success"}
-    elif data.contact_type == "customer":
-        sym.add_user(customer(data.contact_name,
-                        data.contact_username, 
-                        data.contact_phone_num, 
-                        data.contact_password, 
-                        data.contact_email))
-        return {"message": "Register Success"}
+
+
 
 
 @app.get("/users/me")
@@ -220,10 +207,7 @@ async def show_available_room(data:dict)->dict:
     print(a_room)
     for i in a_room:
         print(i)
-    dt = {}
-    for i in a_room:
-        dt[i._room_name] = i._room_pic
-    print(dt)
+    
     return {"Data": a_room}
     #return {"Data": a_room}
 
@@ -259,9 +243,14 @@ async def booking_room(data: dict) -> dict:
     room_name = data["room"]
     st_date = data["start_date"]
     end_date = data["end_date"]
-    username = data["user"]
+    title = data["title"]
+    name = data["name"]
+    surname = data["surname"]
+    email = data["email"]
+    phone_number = data["phone_number"]
+    user = User(title, name, surname, email, phone_number,)
 
-    return {"Data" : testalog.book_room(room_name,st_date,end_date,username)}
+    return {"Data" : testalog.book_room(room_name,st_date,end_date,user,bookhis)}
 
 
 

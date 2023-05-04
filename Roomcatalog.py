@@ -23,8 +23,6 @@ class Roomcatalog:
         #available_room_all = {}
         #j = 0
         for i in self._room_lists:
-            if not i._status_available and i._hotel_name == hotel:
-                continue
             if not i.room_available(date1, date2) and i._hotel_name == hotel:
                 continue
             if not i._hotel_name == hotel:
@@ -51,7 +49,7 @@ class Roomcatalog:
         
         tempcart.remove_from_cart(remove_room)
 
-    def book_room(self, room, st_date, end_date, user):
+    def book_room(self, room, st_date, end_date, user, book_his):
         
         for i in self._room_lists:
             if i._room_name == room:
@@ -62,7 +60,7 @@ class Roomcatalog:
         
         book_room.add_interval(interval)
         booking = Booking(book_room,interval,user)
-        
+        book_his.append(booking)
         
         print(booking)
         return booking

@@ -1,17 +1,15 @@
-from tkinter import ttk
+
 from tkinter import *
+import customtkinter as ctk
 import requests
 from PIL import ImageTk, Image
 from tkcalendar import DateEntry
 from functools import partial
 temp = []
 
-class StartPage(Frame):
+class StartPage(ctk.CTk):
     def __init__(self, parent, controller):
-        global date_in
-        global date_out
-        global selected_room
-
+        super().__init__()
         Frame.__init__(self,parent)
         self.hotel = ["Kirimayaresort","Muthimaya","Atta"]
         self.cal=DateEntry(parent,selectmode='day')
@@ -25,9 +23,8 @@ class StartPage(Frame):
         self.choose_hotel = OptionMenu(parent, self.selected_hotel, *self.hotel)
         self.choose_hotel.config(width=15)
         self.choose_hotel.place(x= 650,y = 27)
-        date_in = self.cal.get_date()
-        date_out = self.cal2.get_date()
-        selected_room = None
+
+    
         
 
       
@@ -74,7 +71,7 @@ class StartPage(Frame):
                     label.destroy()
                 data = response.json()
                 data = data['Data']
-
+                
                 print(data)
                 i=0
                 j=1
@@ -82,15 +79,12 @@ class StartPage(Frame):
                 for room in data:
                     img = PhotoImage(file=f"{room['_room_pic']}")
                     imgs.append(img)
-                    label_img = Label(self, image=img )
+                    label_img = Button(self, image=img, command=partial(controller.change_frame, BookingPage))
                     label_img.place(x=400,y=200+i)
                     text = f"{room['_room_name']}"
                     btn = Button(self, text=f"{room['_room_name']}", command=partial(self.show_room, room, controller))
-                    btn2 = Button(self, text="Book this room", command=lambda: [ selected_room == room, controller.change_frame(BookingPage)])
                     btn.place(x=200,y=200+i)
-                    btn2.place(x=600,y=200+i)
                     temp.append(btn)
-                    temp.append(btn2)
                     j+=1
                     i+=150
             
@@ -112,7 +106,7 @@ class StartPage(Frame):
         self.root = Toplevel()
         self.root.geometry("360x200+280+280")
         
-        button=Button(self.root, text="Back", bg="green", command= lambda: self.root.destroy())
+        button=Button(self.root, text="Back", bg="green", command= lambda: self.parent.destroy())
         #img = Image.open(f"{room['_room_pic']}")
         #img = img.resize((400, 400))
         #img = PhotoImage(img)
@@ -172,8 +166,6 @@ class StartPage(Frame):
 
 
 class BookingPage(Frame):
-    API_ENDPOINT2 = "http://127.0.0.1:8000/book_room"
-
     def __init__(self, parent, controller):
         Frame.__init__(self,parent)
         self.titles = ['Mr.','Ms.','Mrs.','Dr.','Others']
@@ -181,10 +173,9 @@ class BookingPage(Frame):
         self.name = StringVar()
         self.surname = StringVar()
         self.email = StringVar()
-        self.phonenumber = StringVar()
         self.address = StringVar()
         self.nationality = StringVar()
-        
+        self.phonenumber = StringVar()
         self.gname = StringVar()
         self.emailcontact = StringVar()
 
@@ -197,48 +188,28 @@ class BookingPage(Frame):
         self.titleom = OptionMenu(parent, self.title, *self.titles)
         self.titleom.config(width=5,justify=LEFT)
         self.titleom.place(x=10,y=40)
-        print(selected_room)
-        #Label(parent, text=selected_room._room_name).place(x=600, y=100, width=90, height=25)
+        
+        
         Label(parent, text="First Name:").place(x=80, y=20, width=90, height=25)
-        self.entryname = Entry(parent,textvariable=self.name,width=20,justify=LEFT).place(x=95, y=50, width=100, height=35)
+        entryname = Entry(parent,textvariable=self.name,width=20,justify=LEFT).place(x=95, y=50, width=100, height=35)
         Label(parent, text="Last Name:").place(x=180, y=20, width=90, height=25)
-        self.entrysurname = Entry(parent,textvariable=self.surname,width=20,justify=LEFT).place(x=205, y=50, width=100, height=35)
+        entrysurname = Entry(parent,textvariable=self.surname,width=20,justify=LEFT).place(x=205, y=50, width=100, height=35)
         Label(parent, text="Email address:").place(x=10, y=80, width=90, height=25)
-        self.entryemail = Entry(parent,textvariable=self.email,width=50,justify=LEFT).place(x=10, y=110, width=260, height=25)
-        #Label(parent, text="Address:").place(x=10, y=140, width=60, height=25)
-        #Entry(parent,textvariable=self.address,width=60,justify=LEFT).place(x=10, y=170, width=260, height=25)
-        #Label(parent, text="Nationality:").place(x=10, y=200, width=80, height=25)
-        #countryom = OptionMenu(parent,self.nationality,*self.countries)
-        #countryom.config(width=25,justify=LEFT)
-        #countryom.place(x=10, y=230, width=260, height=25)
-        Label(parent, text="Phone number:").place(x=280, y=200, width=90, height=25)
-        self.entryphone_number = Entry(parent,textvariable=self.phonenumber,width=15,justify=LEFT).place(x=280, y=230, width=90, height=25)
-        #Label(parent, text="Room Details").place(x=10, y=270, width=80, height=25)
-        #Label(parent, text="Guest Name:").place(x=10, y=300, width=80, height=25)
-        #gentry = Entry(parent,textvariable=self.gname,width=20,justify=LEFT).place(x=10, y=330, width=90, height=25)
-        #Label(parent, text="E-mail for individual room confirmation:").place(x=110, y=300, width=220, height=25)
-        #mailcontactentry = Entry(parent,textvariable=self.emailcontact,width=50,justify=LEFT).place(x=110, y=330, width=220, height=25)
-        #Label(parent, text="Other Requirement(s):").place()
+        emailentry = Entry(parent,textvariable=self.email,width=50,justify=LEFT).place(x=10, y=110, width=260, height=25)
+        Label(parent, text="Address:").place(x=10, y=140, width=60, height=25)
+        Entry(parent,textvariable=self.address,width=60,justify=LEFT).place(x=10, y=170, width=260, height=25)
+        Label(parent, text="Nationality:").place(x=10, y=200, width=80, height=25)
+        countryom = OptionMenu(parent,self.nationality,*self.countries)
+        countryom.config(width=25,justify=LEFT)
+        countryom.place(x=10, y=230, width=260, height=25)
+        Entry(parent,textvariable=self.phonenumber,width=15,justify=LEFT).place(x=280, y=230, width=90, height=25)
+        Label(parent, text="Room Details").place(x=10, y=270, width=80, height=25)
+        Label(parent, text="Guest Name:").place(x=10, y=300, width=80, height=25)
+        gentry = Entry(parent,textvariable=self.gname,width=20,justify=LEFT).place(x=10, y=330, width=90, height=25)
+        Label(parent, text="E-mail for individual room confirmation:").place(x=110, y=300, width=220, height=25)
+        emailcontactentry = Entry(parent,textvariable=self.emailcontact,width=50,justify=LEFT).place(x=110, y=330, width=220, height=25)
+        Label(parent, text="Other Requirement(s):").place()
 
-        #btn = Button(self, text=f"Book", command=partial(self.book_room))
-        #btn.place(x=500, y=100)
-    
-    def book_room(self):
-        API_ENDPOINT2 = "http://127.0.0.1:8000/book_room"
-        payload = {
-                "room" : f"{selected_room['_room_name']}",
-                "start_date": date_in,
-                "end_date": date_out,
-                "title": self.titleom.get(),
-                "name": self.entryname.get(),
-                "surname":self.entrysurname.get(),
-                "email":self.entryemail.get(),
-                "phone_number":self.entryphone_number.get()
-            }
-        print(payload)
-        response = requests.post(API_ENDPOINT2, json=payload)
-        if response.ok:
-            print("wow")
 
 
 
