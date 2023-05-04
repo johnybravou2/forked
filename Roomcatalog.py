@@ -49,7 +49,7 @@ class Roomcatalog:
         
         tempcart.remove_from_cart(remove_room)
 
-    def book_room(self, room, st_date, end_date, user, book_his):
+    def book_room(self, room, st_date, end_date, user, bookhis):
         
         for i in self._room_lists:
             if i._room_name == room:
@@ -60,7 +60,7 @@ class Roomcatalog:
         
         book_room.add_interval(interval)
         booking = Booking(book_room,interval,user)
-        book_his.append(booking)
+        bookhis.add_book_history(booking)
         
         print(booking)
         return booking

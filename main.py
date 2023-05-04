@@ -20,7 +20,7 @@ room_plantationview1 = Room("Kirimayaresort",
                            "42 sq. m.",
                            "1 Bedroom",
                            "1 Room",
-                            2000,
+                            2990,
                             "PICTURE\PLANTATION.png")
 #room_plantationview2 = Room("Kirimayaresort",
 #                           "Plantation View",
@@ -36,7 +36,7 @@ room_horizonview = Room("Kirimayaresort",
                         "48 sq. m.",
                         "1 Bedroom",
                         "1 Room",
-                        3000,
+                        3990,
                         "PICTURE\HORIZON.png"
                         ) 
 
@@ -47,7 +47,7 @@ room_muthimaya_forest_poolvilla = Room("Muthimaya",
                                        "1 Bedroom",
                                        "1 Room",
                                        
-                                       2500,
+                                       2590,
                                        "PICTURE\MUTHIMAYA.png")
 
 ##atta
@@ -59,7 +59,7 @@ room_one_bedroom_suite = Room("Atta",
                               "1 Bedroom",
                               "1 Room",
                               
-                              "2000",None)
+                              "4990",None)
 
 room_one_bedroom_delight = Room("Atta",
                                 "1006",
@@ -68,7 +68,7 @@ room_one_bedroom_delight = Room("Atta",
                                 "1 Bedroom",
                                 "1 Room",
                                 
-                                "2000",None)
+                                "4990",None)
 
 room_two_bedroom_delight = Room("Atta",
                                 "1007",
@@ -77,7 +77,7 @@ room_two_bedroom_delight = Room("Atta",
                                 "2 Bedroom",
                                 "2 Room",
                                 
-                                "2500",None)
+                                "5990",None)
 
 room_penthouse_suite = Room("Atta",
                             "1008",
@@ -86,7 +86,7 @@ room_penthouse_suite = Room("Atta",
                             "2 Bedroom",
                             "2 Room",
                             
-                            "2000",None)
+                            "9990",None)
 mix = customer("mix",
                "saranji",
                "0627370763",
@@ -240,15 +240,16 @@ async def show_cart():
 @app.post("/book_room",tags = ["Booking"])
 async def booking_room(data: dict) -> dict:
     #current_user._booking = testalog.book_room(data.room,data.start_date,data.end_date)
-    room_name = data["room"]
-    st_date = data["start_date"]
-    end_date = data["end_date"]
-    title = data["title"]
-    name = data["name"]
-    surname = data["surname"]
-    email = data["email"]
-    phone_number = data["phone_number"]
-    user = User(title, name, surname, email, phone_number,)
+    room_name = data['room']
+    st_date = data['start_date']
+    end_date = data['end_date']
+    title = data['title']
+    name = data['name']
+    surname = data['surname']
+    email = data['email']
+    phone_number = data['phone_number']
+    user = User(title, name, surname, email, phone_number)
+    sym.add_user(user)
 
     return {"Data" : testalog.book_room(room_name,st_date,end_date,user,bookhis)}
 
