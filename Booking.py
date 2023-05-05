@@ -5,7 +5,7 @@ from Interval import Interval
 
 class Booking:
     existng_booking_id= set()
-    id = 0
+    id = 100000
 
     def __init__(self, room, interval, user):
         Booking.id += 1
@@ -45,3 +45,11 @@ class BookHistory:
         
     def add_book_history(self,booking):
         self.__history_list.append(booking)
+
+    def show_booking(self,id):
+        for i in self.__history_list:
+            if i._id == id:
+                booking = i
+                return booking
+        return 1
+

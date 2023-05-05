@@ -39,4 +39,8 @@ class Room:
         return self._room_price
 
     def __str__(self):
-        return(f"Room name : {self._room_name } , Hotel name : {self._hotel_name}")
+        return(f"""        Room name : {self._room_name } , 
+        Hotel name : {self._hotel_name} , 
+        Room area : {self._room_area}, 
+        Number of bathroom : {self._number_of_bathroom}, 
+        Number of bedroom : {self._number_of_bedroom}""")

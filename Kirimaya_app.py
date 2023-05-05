@@ -4,9 +4,13 @@ import requests
 import customtkinter as ctk
 from PIL import ImageTk, Image
 from tkcalendar import DateEntry
+from tkcalendar import Calendar
 from functools import partial
 import re
 from datetime import datetime
+import json
+import main as r
+
 
 class StartPage():
     def __init__(self):
@@ -131,7 +135,8 @@ class StartPage():
         lab3.place(x=70,y=80)
         lab4= Label(self.root, text="Number of Bathrooms: "+ f"{room['_number_of_bathroom']}",font=20)
         lab4.place(x=70,y=110)
-        
+        lab5=  Label(self.root, text=f"{room['_room_price']}"+"  THB per night",font=20)
+        lab5.place(x=70,y=140)
         
         button.place(x=10,y=10)
         self.root.mainloop()
@@ -339,8 +344,8 @@ class BookingPage():
     def is_valid_phone_number(self,phone_number):
         if not phone_number.isdigit():
             return False
-        # ตรวจสอบว่าตัวเลขหลังประเทศเป็นเลข 9 หลัก
-        if phone_number[-9] != '9':
+        
+        if len(phone_number) != 10:
             return False
         
         return True
@@ -348,8 +353,8 @@ class BookingPage():
     def is_valid_CVV(self, cvv):
         if not cvv.isdigit():
             return False
-        # ตรวจสอบว่าตัวเลขหลังประเทศเป็นเลข 9 หลัก
-        if cvv[-9] != '9':
+        
+        if len(cvv) != 3:
             return False
         
         return True
@@ -357,46 +362,234 @@ class BookingPage():
 class SuccessPage:
     def __init__(self, booking):
         self.__root = ctk.CTk()
-        self.__root.title("Room Catalog")
-        self.__root.geometry("1024x720")
-        self.__root.minsize(1000 ,600)
-        lab1 = Label(self.__root, text="Booking id = " + f"{booking['_id']}",font=100)
-        lab1.place(x=525,y=280)
+        self.__root.title("Summary")
+        self.__root.geometry("420x200+280+280")
+        lab1 = Label(self.__root, text="Your booking id is " + f"{booking['_id']}",font=100)
+        lab1.place(x=140,y=95)
+        lab2 = Label(self.__root, text="Thank you for your reservation",font=100)
+        lab2.place(x=125,y=40)
         btn1 = Button(self.__root, text="Home",font=100, command= lambda:self.go_first_page())
-        btn1.place(x=550,y=350)
+        btn1.place(x=230,y=140)
+        
         self.__root.mainloop()
-
+        
     def go_first_page(self):
         self.__root.destroy()
         MainApp()
 
 
+class ShowRoomPage(ctk.CTk):
+    def __init__(self):
+        super().__init__()
+        self.title("Room Catalog")
+        self.geometry("1250x720")
+        self.minsize(1200 ,600)
+        ctk.set_widget_scaling(1.5)
+
+        self.grid_columnconfigure((0, 1, 2, 3), weight=1)
+        self.grid_rowconfigure((0, 1, 2, 3), weight=1)
+
+        self.tabview = ctk.CTkTabview(self, width=1000, height=400)
+        self.tabview.grid(row=0, column=0, padx=20, pady=5, sticky="nsew", columnspan=4, rowspan=2)
+        self.tabview.add("Kirimayaresort")
+        self.tabview.add("Muthimaya")
+        self.tabview.add("Atta")
+        self.tabview.tab("Kirimayaresort").grid_columnconfigure(0, weight=1)  # configure grid of individual tabs
+        self.tabview.tab("Muthimaya").grid_columnconfigure(0, weight=1)
+        self.tabview.tab("Atta").grid_columnconfigure(0, weight=1)
+
+        self.Stays_scrollable_frame = ctk.CTkScrollableFrame(master=self.tabview.tab('Kirimayaresort'), height=320)
+        self.Stays_scrollable_frame.grid(row=0, column=0, sticky="nsew", padx=10)
+        self.Stays_scrollable_frame.grid_columnconfigure(0, weight=1)
+
+        self.Rooms_scrollable_frame = ctk.CTkScrollableFrame(master=self.tabview.tab('Muthimaya'), height=320)
+        self.Rooms_scrollable_frame.grid(row=0, column=0, sticky="nsew", padx=10)
+        self.Rooms_scrollable_frame.grid_columnconfigure(0, weight=1)
+
+        self.Suites_scrollable_frame = ctk.CTkScrollableFrame(master=self.tabview.tab('Atta'), height=320)
+        self.Suites_scrollable_frame.grid(row=0, column=0, sticky="nsew", padx=10)
+        self.Suites_scrollable_frame.grid_columnconfigure(0, weight=1)
+        
+        room1 = PhotoImage(file="PICTURE/PLANTATION.png")
+        room1pic = room1.subsample(1, 1)
+        room2 = PhotoImage(file="PICTURE/HORIZON.png")
+        room2pic = room2.subsample(1, 1)
+        room3 = PhotoImage(file="PICTURE/MUTHIMAYA.png")
+        room3pic = room3.subsample(1, 1)
+        room4 = PhotoImage(file="PICTURE/ONEBEDROOMSUITE.png")
+        room4pic = room4.subsample(1, 1)
+        room5 = PhotoImage(file="PICTURE/ONEBEDROOMDELIGHT.png")
+        room5pic = room5.subsample(1, 1)
+        room6 = PhotoImage(file="PICTURE/ONEBEDROOMDELIGHT.png")
+        room6pic = room6.subsample(1, 1)
+        room7 = PhotoImage(file="PICTURE/PENTHOUSESUITE.png")
+        room7pic = room7.subsample(1, 1)
+        # room9 = PhotoImage(file="Picture/ChaoPSuite.png")
+        # room9pic = room9.subsample(1, 1)
+        # room10 = PhotoImage(file="Picture/Authors.png")
+        # room10pic = room10.subsample(1, 1)
+        # room11 = PhotoImage(file="Picture/Deluxe1.png")
+        # room11pic = room11.subsample(1, 1)
+        # room12 = PhotoImage(file="Picture/Deluxe2.png")
+        # room12pic = room12.subsample(1, 1)
+        # room13 = PhotoImage(file="Picture/Premier1.png")
+        # room13pic = room13.subsample(1, 1)
+        # room14 = PhotoImage(file="Picture/Premier2.png")
+        # room14pic = room14.subsample(1, 1)
+        # room15 = PhotoImage(file="Picture/Siam.png")
+        # room15pic = room15.subsample(1, 1)
+        # room16 = PhotoImage(file="Picture/Ambassador.png")
+        # room16pic = room16.subsample(1, 1)
+        # room17 = PhotoImage(file="Picture/Selandia.png")
+        # room17pic = room17.subsample(1, 1)
+        # room18 = PhotoImage(file="Picture/Royal.png")
+        # room18pic = room18.subsample(1, 1)
+        # room19 = PhotoImage(file="Picture/Oriental.png")
+        # room19pic = room19.subsample(1, 1)
+
+        room_pics = [room1pic, room2pic, room3pic, room4pic, room5pic, room6pic, room7pic]
+        room_names = [r.room_plantationview1, r.room_horizonview, r.room_muthimaya_forest_poolvilla, r.room_one_bedroom_suite, r.room_one_bedroom_delight, r.room_two_bedroom_delight, r.room_penthouse_suite]
+
+        for i in range(2):
+            frame = ctk.CTkScrollableFrame(master=self.Stays_scrollable_frame, width=850, orientation='horizontal')
+            frame.grid(row=i, column=0, padx=20, pady=10)
+            ctk.CTkLabel(master=frame, image=room_pics[i], text='').grid(row=0, column=0, padx=20)
+            ctk.CTkLabel(master=frame, text=str(room_names[i]), justify='left').grid(row=0, column=1, padx=20, pady=20)
+
+        for i in range(1):
+            frame = ctk.CTkScrollableFrame(master=self.Rooms_scrollable_frame, width=850, orientation='horizontal')
+            frame.grid(row=i , column=0, padx=20, pady=10)
+            ctk.CTkLabel(master=frame, image=room_pics[i+2], text='').grid(row=0, column=0, padx=20)
+            ctk.CTkLabel(master=frame, text=str(room_names[i+2]), justify='left').grid(row=0, column=1, padx=20, pady=20)
+
+        for i in range(len(room_pics) - 3):
+            frame = ctk.CTkScrollableFrame(master=self.Suites_scrollable_frame, width=850, orientation='horizontal')
+            frame.grid(row=i + 3, column=0, padx=20, pady=10)
+            ctk.CTkLabel(master=frame, image=room_pics[i + 3], text='').grid(row=0, column=0, padx=20)
+            ctk.CTkLabel(master=frame, text=str(room_names[i + 3]), justify='left').grid(row=0, column=1, padx=20, pady=20)
+
+        back_button = ctk.CTkButton(self, text="Back", command=lambda:self.back())
+        back_button.grid(row=2, column=3, columnspan=2)
+
+
+        self.mainloop()
+    
+
+
+    def back(self):
+        self.destroy()
+        MainApp()
+        
+class SelectRoomPage(ctk.CTk):
+    def __init__(self):
+        super().__init__()
+        self.title("Select Room")
+        self.geometry("1250x720")
+        self.minsize(1200 ,600)
+
+        self.grid_columnconfigure((0, 1, 2, 3, 4), weight=1)
+        self.grid_rowconfigure((0, 1, 2, 3, 4), weight=0)
+        ctk.set_widget_scaling(1.2)
+
+
+        self.check_in_label = ctk.CTkLabel(self, text="Check-in Date")
+        self.check_in_label.grid(column=0, row=2)
+
+        self.check_in_cal = Calendar(master=self, background='#2f3640',selectmode = 'day', year = 2023, month = 5, day = 2)
+        self.check_in_cal.grid(row=1 ,column=0 ,padx=50)
+
+        self.check_out_label = ctk.CTkLabel(self, text="Check-out Date")
+        self.check_out_label.grid(row=2, column=4)
+        
+        self.check_out_cal = Calendar(master=self, background='#2f3640',selectmode = 'day', year = 2023, month = 5, day = 4)
+        self.check_out_cal.grid(row=1 , column=4, padx=40)
+
+        test = ShowRoomPage()
+
+
+
+
 class MainApp:
     def __init__(self):
+        global temp
         self.__mainapp = ctk.CTk()
-        #self.container = Frame(self)
-        #self.container.pack(fill=BOTH,expand=YES)
-        #self.container.config()
-        self.__mainapp.title("Room Catalog")
-        self.__mainapp.geometry("400x400")
-        
-        btn = Button(self.__mainapp, text="Book a room", command=lambda: self.go_bookrooom(),font=30)
-        btn.place(x=180, y=200)
+        self.__mainapp.title("Kirmaya")
+        self.__mainapp.geometry("400x320")
+        self.temp = []
+        img = PhotoImage(file='PICTURE/KIRIMAYA.png')
 
-        #self.frame = StartPage(self.container,self)
-        #self.frame.pack(fill=BOTH,expand=YES)
+        Label(self.__mainapp, image=img).place(x=115,y=50)
+        btn = Button(self.__mainapp, text="Book a room", command=lambda: self.go_bookrooom(),font=30)
+        btn.place(x=180, y=170)
+        btn = Button(self.__mainapp, text="All room", command=lambda: self.go_showroom(),font=30)
+        btn.place(x=200, y=220)
+        btn2 = Button(self.__mainapp, text="View booking", command=lambda: self.go_view_booking(),font=30)
+        btn2.place(x=180, y=270)
         self.__mainapp.mainloop()
         
     def go_bookrooom(self):
         self.__mainapp.destroy()
         n =StartPage()
-    #def change_frame(self,frame):
-    #    self.frame.destroy()
-    #    self.frame = frame(self.container,self)
-    #    self.frame.pack(fill=BOTH,expand=YES)
+    
+    def go_showroom(self):
+        self.__mainapp.destroy()
+        ShowRoomPage()
+
+    def go_view_booking(self):
+        
+        self.root = Toplevel()
+        self.root.title("Detail")
+        self.root.geometry("420x200+280+280")
+
+        self.booking_id = StringVar()
+        Label(self.root, text="Please enter your booking id",font=20).place(x=80,y=10)
+        id_entry = Entry(self.root, textvariable=self.booking_id, font = 20,width=13 )
+        id_entry.place(x=100,y=50)
+        btn = Button(self.root, text="Confirm",bg="green",command= lambda: self.find_booking())
+        btn.place(x=260,y=50)
 
 
+        self.root.mainloop()
 
+    def find_booking(self):
+        API_ENDPOINT3 = "http://127.0.0.1:8000/book_history"
+        payload = { "id" : int(self.booking_id.get())}
+        response = requests.post(API_ENDPOINT3, json=payload)
+        
+        for label in self.temp:
+            label.destroy()
+
+        
+        if response.ok:
+            data = response.json()
+            data = data['Data']
+            if data == 1:
+                print("444")
+                lab = Label(self.root, text="Not valid id",fg=("red"))
+                lab.place(x=260,y=80)
+                self.temp.append(lab)
+
+            else:
+                print(data)
+                print(type(data))
+                data2 = data['_room']
+                data2 = data2['_room_name']
+                data = data['_interval']
+                date_in = datetime.fromisoformat(f"{data['_date_start']}")
+                date_in = date_in.strftime('%d/%m/%y')
+                date_end = datetime.fromisoformat(f"{data['_date_end']}")
+                date_end = date_end.strftime('%d/%m/%y')
+                print(date_in)
+                print(date_end)
+                print(data2)
+                lb1= Label(self.root, text=date_in + " to "+ date_end,font=20)
+                lb1.place(x=80,y=100)
+                lb2=Label(self.root, text=data2,font=20)
+                lb2.place(x=80,y=140)
+                self.temp.append(lb1)
+                self.temp.append(lb2)
+
+            
 if __name__ == "__main__":
     app = MainApp()
     
