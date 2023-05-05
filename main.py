@@ -21,14 +21,7 @@ room_plantationview1 = Room("Kirimayaresort",
                            "1 Room",
                             2990,
                             "PICTURE\PLANTATION.png")
-#room_plantationview2 = Room("Kirimayaresort",
-#                           "Plantation View",
-#                           "1102",
-#                           "42 sq. m.",
-#                           "1 Bedroom",
-#                           "1 Room",
-#                            2000,
-#                            "PICTURE\PLANTATION.png")
+
 room_horizonview = Room("Kirimayaresort",
                         "Horizon View",
                         "1201",
@@ -39,6 +32,7 @@ room_horizonview = Room("Kirimayaresort",
                         "PICTURE\HORIZON.png"
                         ) 
 
+##muthi
 room_muthimaya_forest_poolvilla = Room("Muthimaya",
                                         "MUTHI MAYA Forest Pool Villa",
                                         "103",
@@ -107,7 +101,7 @@ testalog = Roomcatalog()
 bookhis = BookHistory()
 
 testalog.add_room(room_plantationview1)
-#testalog.add_room(room_plantationview2)
+
 testalog.add_room(room_horizonview)
 testalog.add_room(room_muthimaya_forest_poolvilla)
 testalog.add_room(room_one_bedroom_suite)
@@ -125,15 +119,7 @@ print(bookhis.show_booking(1))
 sym.add_user(mix)
 sym.add_user(xiw)
 
-#function หาuser
 
-
-#         "car": "ABZW-999",
-#   "start_date": "11-6-2018",
-#   "start_time": "9:00",
-#   "end_date": "12-6-2018",
-#   "end_time": "9:59"
-# HOME
 @app.get("/")
 async def home():
     return {"EiEi"}
@@ -141,9 +127,6 @@ async def home():
 
 
 
-
-
-#Cars
 @app.get("/Rooms", tags=["Catalog"])
 async def home():
     return {"Data": testalog._room_lists}
@@ -155,7 +138,7 @@ async def home():
                         "room_amount": x.get_room_amount()}
                        for x in testalog._room_lists]}
 
-#Add_book
+
 @app.post("/add_room", tags=["Room"])
 async def add_room_to_catalog(data:dict)->dict:
     
@@ -188,7 +171,7 @@ async def show_available_room(data:dict)->dict:
         print(i)
     
     return {"Data": a_room}
-    #return {"Data": a_room}
+    
 
 
 
@@ -196,7 +179,7 @@ async def show_available_room(data:dict)->dict:
 
 @app.post("/book_room",tags = ["Booking"])
 async def booking_room(data: dict) -> dict:
-    #current_user._booking = testalog.book_room(data.room,data.start_date,data.end_date)
+    
     room_name = data['room']
     st_date = data['start_date']
     end_date = data['end_date']
@@ -220,43 +203,5 @@ async def show_book(data: dict) -> dict:
         return {"Data": 1}
     
 
-    #booking = bookhis.show_booking(booking_id)
-    #print(f"{booking['_interval']}")
     return{"Data": bookhis.show_booking(booking_id)}
-
-##### CREDIT ###### E D I T I N G
-#@app.post("/add_credit_info", tags=["CreditCard"])
-#async def add_credit_info(data:CreditCard,current_user= Depends(sym.get_current_user)):
-#    current_user.add_credit_info(CreditInfo(data.exprie_card,data.card_number,data.security_credit))
-#    return current_user._credit_card
-#
-#@app.post("/edit_credit_info", tags=["CreditCard"])
-#async def edit_credit_info(data:CreditCard,current_user= Depends(sym.get_current_user)):
-#    current_user._credit_card.edit_credit_info(data.exprie_card,data.card_number,data.security_credit)
-#    return current_user._credit_card
-#
-#
-#
-#@app.get("/Payment",tags =["Payment"])
-#async def make_payment(current_user = Depends(sym.get_current_user)):
-#    status = False
-#    transaction_id = random.randint(100000000,999999999)
-#    rental_price = current_user._booking.get_price()
-#    credit_info = current_user._credit_card
-#    payment = Payment(rental_price,status,transaction_id,credit_info)
-#    return payment
-#
-#
-## @app.post("/watch ",tags = ["Favourite"])
-## async def add_favourite(data:FavouriteDTO):
-##     petch.add_fav_car(data.car)
-##     return {"status":"Success"}
-#    
-#    
-#
-#
-##Credit_Card
-#
-#Payment
-
 

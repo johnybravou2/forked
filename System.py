@@ -20,15 +20,5 @@ class System:
     def add_user (self,user):
         self.__list_user.append(user)
 
-    def get_user(self,username: str):
-        for user in self.__list_user:
-            if user._contact_username == username:
-                return user
-        
-    def check_user (self,username,password):
-        for user in self.__list_user:
-            if user._contact_username == username:
-                if user._contact_password == password:
-                    return True
-        return False
+
 

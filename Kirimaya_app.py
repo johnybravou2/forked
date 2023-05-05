@@ -115,18 +115,13 @@ class StartPage():
 
     def show_room(self,room):
         print(room)
-        #controller.change_frame()
+        
         self.root = Toplevel()
         self.root.title("Detail")
         self.root.geometry("420x200+280+280")
         
         button=Button(self.root, text="Back", bg="green", command= lambda: self.root.destroy())
-        #img = Image.open(f"{room['_room_pic']}")
-        #img = img.resize((400, 400))
-        #img = PhotoImage(img)
         
-        #lab2= Label(self.self.__root, image=img)
-        #lab2.place(x=10, y=10)
         lab1= Label(self.root, text=f"{room['_room_name']}", font=25 )
         lab1.place(x=70,y=20)
         lab2= Label(self.root, text="Room Space: "+ f"{room['_room_area']}",font=20)
@@ -183,7 +178,7 @@ class BookingPage():
         self.titleom.place(x=90, y=90)
 
         print(selected_room)
-        # Label(self.__root, text=selected_room._room_name).place(x=680, y=100, width=90, height=25)
+        
         Label(self.__root, text="First Name:").place(x=180, y=70, width=100, height=25)
         self.entryname = Entry(self.__root, textvariable=self.name, width=20, justify=LEFT).place(x=185, y=100, width=100, height=35)
         Label(self.__root, text="Last Name:").place(x=315, y=70, width=90, height=25)
@@ -307,35 +302,35 @@ class BookingPage():
 
 
     def is_valid_email(self,email):
-    # สร้าง pattern สำหรับตรวจสอบว่าเป็น email หรือไม่
+    
         pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
 
-    # ใช้ฟังก์ชัน search() ของ regex ในการตรวจสอบ
+    
         if re.search(pattern, email):
             return True
         else:
             return False
         
     def is_valid_credit_card(self,number):
-        # ลบช่องว่างและขีดกลางจากหมายเลขบัตร
+        
         number = number.replace(' ', '').replace('-', '')
-        # ตรวจสอบว่าหมายเลขบัตรมีตัวเลขเท่านั้น
+        
         if not number.isdigit():
             return False
-        # สร้าง list ที่มีตัวเลขในหมายเลขบัตร
+        
         digits = [int(d) for d in number]
-        # ตรวจสอบว่าหมายเลขบัตรมีความยาวอย่างน้อย 13 หลัก
+       
         if len(digits) < 13:
             return False
         else:
             return True
 
     def is_credit_card_expired(self, expiration_date):
-        # แปลงข้อมูลวันหมดอายุบัตรเครดิตเป็น datetime object
+        
         expiration_date = datetime.strptime(expiration_date, '%m/%y')
-        # คำนวณวันที่ปัจจุบัน
+        
         today = datetime.today()
-        # เปรียบเทียบวันที่หมดอายุบัตรเครดิตกับวันที่ปัจจุบัน
+        
         if expiration_date <= today:
             return True
         else:
@@ -424,28 +419,7 @@ class ShowRoomPage(ctk.CTk):
         room6pic = room6.subsample(1, 1)
         room7 = PhotoImage(file="PICTURE/PENTHOUSESUITE.png")
         room7pic = room7.subsample(1, 1)
-        # room9 = PhotoImage(file="Picture/ChaoPSuite.png")
-        # room9pic = room9.subsample(1, 1)
-        # room10 = PhotoImage(file="Picture/Authors.png")
-        # room10pic = room10.subsample(1, 1)
-        # room11 = PhotoImage(file="Picture/Deluxe1.png")
-        # room11pic = room11.subsample(1, 1)
-        # room12 = PhotoImage(file="Picture/Deluxe2.png")
-        # room12pic = room12.subsample(1, 1)
-        # room13 = PhotoImage(file="Picture/Premier1.png")
-        # room13pic = room13.subsample(1, 1)
-        # room14 = PhotoImage(file="Picture/Premier2.png")
-        # room14pic = room14.subsample(1, 1)
-        # room15 = PhotoImage(file="Picture/Siam.png")
-        # room15pic = room15.subsample(1, 1)
-        # room16 = PhotoImage(file="Picture/Ambassador.png")
-        # room16pic = room16.subsample(1, 1)
-        # room17 = PhotoImage(file="Picture/Selandia.png")
-        # room17pic = room17.subsample(1, 1)
-        # room18 = PhotoImage(file="Picture/Royal.png")
-        # room18pic = room18.subsample(1, 1)
-        # room19 = PhotoImage(file="Picture/Oriental.png")
-        # room19pic = room19.subsample(1, 1)
+        
 
         room_pics = [room1pic, room2pic, room3pic, room4pic, room5pic, room6pic, room7pic]
         room_names = [r.room_plantationview1, r.room_horizonview, r.room_muthimaya_forest_poolvilla, r.room_one_bedroom_suite, r.room_one_bedroom_delight, r.room_two_bedroom_delight, r.room_penthouse_suite]

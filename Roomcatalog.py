@@ -30,28 +30,13 @@ class Roomcatalog:
            
         return available_room
     
-    def add_to_cart(self, room, tempcart):
-        for i in self._room_lists:
-            if i._room_name == room:
-                add_room = i
-                break
-        
-        tempcart.add_room_Cart(add_room)
-
-    def remove_from_cart(self, room, tempcart):
-        for i in self._room_lists:
-            if i._room_name == room:
-                remove_room = i
-                break
-        
-        tempcart.remove_from_cart(remove_room)
 
     def book_room(self, room, st_date, end_date, user, bookhis):
         
         for i in self._room_lists:
             if i._room_name == room:
                 book_room = i
-                print('#############')
+
                 break
         interval = Interval(st_date, end_date)
         
