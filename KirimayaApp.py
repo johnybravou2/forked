@@ -12,7 +12,7 @@ import json
 import main as r
 
 
-class StartPage():
+class SearchPage():
     def __init__(self):
         global date_in
         global date_out
@@ -230,7 +230,7 @@ class BookingPage():
     
     def back(self):
         self.__root.destroy()
-        StartPage()
+        SearchPage()
 
     def book_room(self):
         card_date = str(self.com1.get())+"/"+str(self.com2.get())
@@ -496,7 +496,7 @@ class MainApp:
         
     def go_bookrooom(self):
         self.__mainapp.destroy()
-        n =StartPage()
+        SearchPage()
     
     def go_showroom(self):
         self.__mainapp.destroy()
