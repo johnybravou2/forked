@@ -255,28 +255,26 @@ class BookingPage():
             error.place(x=600, y=570)
             self.temp.append(error)
 
-        elif not self.is_valid_email(self.email.get()):
-            error = Label(self.__root, text="Not valid email", fg=("red"))
-            error.place(x=600, y=570)
-            self.temp.append(error)
+
 
         elif not self.is_valid_CVV(self.cvv.get()):
             error = Label(self.__root, text="Not valid cvv", fg=("red"))
             error.place(x=600, y=570)
             self.temp.append(error)
-    
+        
+        
+
         else:
             if not self.is_valid_email(self.email.get()):
                 error = Label(self.__root, text="Not valid email", fg=("red"))
-                error.place(x=490, y=70)
+                error.place(x=600, y=570)
                 self.temp.append(error)
 
             if not self.is_valid_credit_card(self.card_number.get()):
                 print("mic")
                 error = Label(self.__root, text="Not valid card", fg=("red"))
-                error.place(x=490, y=70)
+                error.place(x=600, y=570)
                 self.temp.append(error)
-
             else:    
                 API_ENDPOINT2 = "http://127.0.0.1:8000/book_room"
                 payload = {
@@ -298,8 +296,6 @@ class BookingPage():
                     self.__root.destroy()
                     SuccessPage(data)
                     print(data)
-
-
 
     def is_valid_email(self,email):
     
@@ -327,7 +323,7 @@ class BookingPage():
 
     def is_credit_card_expired(self, expiration_date):
         
-        expiration_date = datetime.strptime(expiration_date, '%m/%y')
+        expiration_date = datetime.strptime(expiration_date,'%m/%y')
         
         today = datetime.today()
         
