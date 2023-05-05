@@ -1,6 +1,7 @@
 from Roomcatalog import Roomcatalog
 import datetime
 from Room import *
+from Booking import BookHistory
 class User:
     def __init__(self, title, name, surname, email, phone_number) :
         self._title = title
@@ -8,7 +9,10 @@ class User:
         self._surname = surname
         self._email = email
         self._phone_number = phone_number
+        self._booked_list = BookHistory()
 
+    def add_booking(self,booking):
+        self._booked_list.add_book_history(booking)
 
 class customer(User):
     def __init__(self, contact_name, contact_username, contact_phone_num, contact_password, contact_email):

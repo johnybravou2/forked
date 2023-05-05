@@ -2,6 +2,7 @@ from datetime import datetime
 from Room import Room
 from Interval import Interval
 from Booking import Booking
+
 class Roomcatalog:
     def __init__(self):
         self._room_lists = []
@@ -43,6 +44,7 @@ class Roomcatalog:
         book_room.add_interval(interval)
         booking = Booking(book_room,interval,user)
         bookhis.add_book_history(booking)
-        
+        #user.add_booking(booking)
         print(booking)
+        
         return booking

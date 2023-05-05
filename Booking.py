@@ -11,20 +11,16 @@ class Booking:
         Booking.id += 1
         self._room = room
         self._interval = interval
-        self._id = Booking.id
         self._user = user
-
-
-
+        self._id = Booking.id
         
- 
 
     def __str__(self):
         m_str = "Room: "+ str(self._room)
         m_str += " ID: " + str(self._id)
         m_str += " Time : " + self._interval.__str__()
         return(f"room: {self._room._room_name}  Time: {self._interval.__str__()} id: {self._id}")
-        return m_str
+    
     
 class BookHistory:
     def __init__(self):
@@ -39,4 +35,3 @@ class BookHistory:
                 booking = i
                 return booking
         return 1
-

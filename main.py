@@ -1,6 +1,6 @@
 from Room import Room
 from datetime import *
-from fastapi import FastAPI
+from fastapi import FastAPI,HTTPException
 import random
 from account import*
 
@@ -175,33 +175,35 @@ async def show_available_room(data:dict)->dict:
 
 
 
-
-
 @app.post("/book_room",tags = ["Booking"])
 async def booking_room(data: dict) -> dict:
     
-    room_name = data['room']
-    st_date = data['start_date']
-    end_date = data['end_date']
-    title = data['title']
-    name = data['name']
-    surname = data['surname']
-    email = data['email']
-    phone_number = data['phone_number']
+    room_name = data["room"]
+    st_date = data["start_date"]
+    end_date = data["end_date"]
+    title = data["title"]
+    name = data["name"]
+    surname = data["surname"]
+    email = data["email"]
+    phone_number = data["phone_number"]
     user = User(title, name, surname, email, phone_number)
     sym.add_user(user)
-
+    
+    
     return {"Data" : testalog.book_room(room_name,st_date,end_date,user,bookhis)}
+
+
+
 
 
 @app.post("/book_history",tags = ["Booking"])
 async def show_book(data: dict) -> dict:
     booking_id = data['id']
     
+
     if bookhis.show_booking(booking_id) == 1:
         print('1')
         return {"Data": 1}
     
-
     return{"Data": bookhis.show_booking(booking_id)}
 
