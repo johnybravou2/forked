@@ -249,53 +249,50 @@ class BookingPage():
             error = Label(self.__root, text="Not valid phone number", fg=("red"))
             error.place(x=600, y=570)
             self.temp.append(error)
-
-        elif self.is_credit_card_expired(card_date):
-            error = Label(self.__root, text="Credit card expired", fg=("red"))
+        elif not self.is_valid_email(self.email.get()):
+            error = Label(self.__root, text="Not valid email", fg=("red"))
             error.place(x=600, y=570)
-            self.temp.append(error)
-
-
-
+            self.temp.append(error)  
+        elif not self.is_valid_credit_card(self.card_number.get()):
+            print("mic")
+            error = Label(self.__root, text="Not valid card", fg=("red"))
+            error.place(x=600, y=570)
+            self.temp.append(error)  
+        
         elif not self.is_valid_CVV(self.cvv.get()):
             error = Label(self.__root, text="Not valid cvv", fg=("red"))
             error.place(x=600, y=570)
             self.temp.append(error)
         
+               
+        elif self.is_credit_card_expired(card_date):
+            error = Label(self.__root, text="Credit card expired", fg=("red"))
+            error.place(x=600, y=570)
+            self.temp.append(error)
+       
         
-
-        else:
-            if not self.is_valid_email(self.email.get()):
-                error = Label(self.__root, text="Not valid email", fg=("red"))
-                error.place(x=600, y=570)
-                self.temp.append(error)
-
-            if not self.is_valid_credit_card(self.card_number.get()):
-                print("mic")
-                error = Label(self.__root, text="Not valid card", fg=("red"))
-                error.place(x=600, y=570)
-                self.temp.append(error)
-            else:    
-                API_ENDPOINT2 = "http://127.0.0.1:8000/book_room"
-                payload = {
-                        "room" : f"{self.selected_room['_room_name']}",
-                        "start_date": date_in.strftime("%d-%m-%Y"),
-                        "end_date": date_out.strftime("%d-%m-%Y"),
-                        "title": self.title.get(),
-                        "name": self.name.get(),
-                        "surname":self.surname.get(),
-                        "email":self.email.get(),
-                        "phone_number":self.phonenumber.get()
-                    }
-                print(payload)
-                response = requests.post(API_ENDPOINT2, json=payload)
-                if response.ok:
-                    print("wow")
-                    data = response.json()
-                    data = data['Data']
-                    self.__root.destroy()
-                    SuccessPage(data)
-                    print(data)
+        
+        else:    
+            API_ENDPOINT2 = "http://127.0.0.1:8000/book_room"
+            payload = {
+                    "room" : f"{self.selected_room['_room_name']}",
+                    "start_date": date_in.strftime("%d-%m-%Y"),
+                    "end_date": date_out.strftime("%d-%m-%Y"),
+                    "title": self.title.get(),
+                    "name": self.name.get(),
+                    "surname":self.surname.get(),
+                    "email":self.email.get(),
+                    "phone_number":self.phonenumber.get()
+                }
+            print(payload)
+            response = requests.post(API_ENDPOINT2, json=payload)
+            if response.ok:
+                print("wow")
+                data = response.json()
+                data = data['Data']
+                self.__root.destroy()
+                SuccessPage(data)
+                print(data)
 
     def is_valid_email(self,email):
     
