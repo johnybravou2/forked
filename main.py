@@ -1,6 +1,6 @@
 from Room import Room
 from datetime import *
-from fastapi import FastAPI,HTTPException
+from fastapi import FastAPI
 import random
 from account import*
 
