@@ -447,31 +447,6 @@ class ShowRoomPage(ctk.CTk):
         self.destroy()
         MainApp()
         
-class SelectRoomPage(ctk.CTk):
-    def __init__(self):
-        super().__init__()
-        self.title("Select Room")
-        self.geometry("1250x720")
-        self.minsize(1200 ,600)
-
-        self.grid_columnconfigure((0, 1, 2, 3, 4), weight=1)
-        self.grid_rowconfigure((0, 1, 2, 3, 4), weight=0)
-        ctk.set_widget_scaling(1.2)
-
-
-        self.check_in_label = ctk.CTkLabel(self, text="Check-in Date")
-        self.check_in_label.grid(column=0, row=2)
-
-        self.check_in_cal = Calendar(master=self, background='#2f3640',selectmode = 'day', year = 2023, month = 5, day = 2)
-        self.check_in_cal.grid(row=1 ,column=0 ,padx=50)
-
-        self.check_out_label = ctk.CTkLabel(self, text="Check-out Date")
-        self.check_out_label.grid(row=2, column=4)
-        
-        self.check_out_cal = Calendar(master=self, background='#2f3640',selectmode = 'day', year = 2023, month = 5, day = 4)
-        self.check_out_cal.grid(row=1 , column=4, padx=40)
-
-        test = ShowRoomPage()
 
 
 
